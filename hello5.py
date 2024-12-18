@@ -118,8 +118,6 @@ def run_tool(tool_call):
             print(f"delete_file, couldn't parse arguments: {arguments}")
             return
         delete_file(arguments["path"])
-    # elif tool_call.function.name == "make_dir":
-    #     make_dir(arguments["path"])
 
 
 from openai import OpenAI

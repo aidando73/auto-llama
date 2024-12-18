@@ -98,7 +98,11 @@ for i in range(LOOP_LIMIT):
         },
         # tools=TOOLS,
     )
-    plan = json.loads(response.completion_message.content)
+    try:
+        plan = json.loads(response.completion_message.content)
+    except Exception as e:
+        print(f"Error parsing plan: {e}")
+        plan = {"steps": []}
     for step_idx, step in enumerate(plan["steps"]):
         print(f"{step_idx + 1}. {step}")
     print("\n")

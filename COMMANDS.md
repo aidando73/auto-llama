@@ -10,5 +10,6 @@ docker run -it \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   -v ~/.llama:/root/.llama \
   llamastack/distribution-fireworks \
-  --port $LLAMA_STACK_PORT
+  --port $LLAMA_STACK_PORT \
+  --env FIREWORKS_API_KEY=$FIREWORKS_API_KEY
 ```

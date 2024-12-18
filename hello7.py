@@ -1,6 +1,6 @@
 import os
 from llama_stack_client import LlamaStackClient
-from tools import SANDBOX_DIR, TOOLS
+from tools import SANDBOX_DIR, TOOLS, run_tool
 import json
 
 MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
@@ -112,8 +112,8 @@ for i in range(LOOP_LIMIT):
             {get_codebase_contents()}
             Please perform the following operation: {step}
             """
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
+        response = client.inference.chat_completion(
+            model_id=MODEL_ID,
             messages=[
                 {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
                 {"role": "user", "content": prompt},

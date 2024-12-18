@@ -44,7 +44,7 @@ RESET = "\033[0m"
 client = LlamaStackClient(base_url=f"http://localhost:{os.environ['LLAMA_STACK_PORT']}")
 
 review_feedback = None
-for i in range(LOOP_LIMIT):
+for i in range(1, LOOP_LIMIT + 1):
     print(f"{BLUE}Coder Agent - Creating Plan - Iteration {i}{RESET}")
     if review_feedback:
         prompt_feedback = f"""

@@ -50,7 +50,7 @@ TOOLS = [
 ]
 
 
-def upsert_file(path, content):
+def create_file(path, content):
     # Hack because llama sometimes escapes newlines
     content = content.replace("\\n", "\n")
 
@@ -62,6 +62,17 @@ def upsert_file(path, content):
         f.write(content)
     print(f"Created file {os.path.join(SANDBOX_DIR, path)}")
 
+def update_file(path, content):
+    # Hack because llama sometimes escapes newlines
+    content = content.replace("\\n", "\n")
+
+    # Create any directories that don't exist
+    os.makedirs(os.path.dirname(os.path.join(SANDBOX_DIR, path)), exist_ok=True)
+
+    # Write to file
+    with open(os.path.join(SANDBOX_DIR, path), "w") as f:
+        f.write(content)
+    print(f"Updated file {os.path.join(SANDBOX_DIR, path)}")
 
 def delete_file(path):
     # If the file doesn't exist, don't do anything
@@ -80,14 +91,14 @@ def run_tool(tool_call):
         if "path" not in arguments or "content" not in arguments:
             print(f"create_file, couldn't parse arguments: {arguments}")
             return
-        upsert_file(arguments["path"], arguments["content"])
+        create_file(arguments["path"], arguments["content"])
     elif tool_call.tool_name == "update_file":
         # Does the same thing as create_file - but nice to have a separate function for updating files
         # So the LLM has the option to update files if it wants to - if that makes more sense than creating a new file
         if "path" not in arguments or "content" not in arguments:
             print(f"update_file, couldn't parse arguments: {arguments}")
             return
-        upsert_file(arguments["path"], arguments["content"])
+        update_file(arguments["path"], arguments["content"])
     elif tool_call.tool_name == "delete_file":
         if "path" not in arguments:
             print(f"delete_file, couldn't parse arguments: {arguments}")

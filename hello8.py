@@ -7,6 +7,8 @@ MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
 
 LOOP_LIMIT = 5
 
+MAX_TOKENS = 128_000
+
 # response = client.inference.chat_completion(
 #     model_id=model_id,
 #     messages=[{"role": "user", "content": "What is the capital of France?"}],
@@ -61,7 +63,7 @@ for i in range(LOOP_LIMIT):
 
     prompt =f"""
         Create a step by step plan to complete the task of creating a codebase that will {PROGRAM_OBJECTIVE}.
-        You have 3 different operations you can perform. create_file(path, content), update_file(path, content), delete_file(path)
+        You have 3 different operations you can perform. You can create a file, update a file, or delete a file.
         Limit your step by step plan to only these operations per step.
 
         Here is the codebase currently:
@@ -77,6 +79,9 @@ for i in range(LOOP_LIMIT):
             {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
         ],
+        sampling_params={
+            "max_tokens": MAX_TOKENS,
+        },
         response_format={
             "type": "json_schema",
             "json_schema": {
@@ -122,14 +127,14 @@ for i in range(LOOP_LIMIT):
                 {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
                 {"role": "user", "content": prompt},
             ],
-            tools=TOOLS,
             sampling_params={
-                "max_tokens": ,
-            }
+                "max_tokens": MAX_TOKENS,
+            },
+            tools=TOOLS,
         )
         message = response.completion_message
         if message.content:
-            print("Not enough information to run tool: ", message.content[:100])
+            print("Not enough information to run tool: ", message.content[:100] + "...")
         else:
             tool_call = message.tool_calls[0]
             run_tool(tool_call)
@@ -147,6 +152,9 @@ for i in range(LOOP_LIMIT):
             Please provide a list of changes you would like to make to the codebase.
             """},
         ],
+        sampling_params={
+            "max_tokens": MAX_TOKENS,
+        },
         stream=True,
     )
     review_feedback = ""

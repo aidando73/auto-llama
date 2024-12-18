@@ -97,7 +97,6 @@ for i in range(LOOP_LIMIT):
                 "additionalProperties": False
             }
         },
-        # tools=TOOLS,
     )
     try:
         plan = json.loads(response.completion_message.content)

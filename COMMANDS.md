@@ -12,4 +12,6 @@ docker run -it \
   llamastack/distribution-fireworks \
   --port $LLAMA_STACK_PORT \
   --env FIREWORKS_API_KEY=$FIREWORKS_API_KEY
+
+python app.py
 ```

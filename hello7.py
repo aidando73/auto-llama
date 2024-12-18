@@ -96,7 +96,7 @@ for i in range(LOOP_LIMIT):
                 "additionalProperties": False
             }
         },
-        tools=TOOLS,
+        # tools=TOOLS,
     )
     plan = json.loads(response.completion_message.content)
     for step_idx, step in enumerate(plan["steps"]):
@@ -104,29 +104,29 @@ for i in range(LOOP_LIMIT):
     print("\n")
 
     # Coding agent executes the plan
-    # print(f"{BLUE}Coder Agent - Executing Plan - Iteration {i}{RESET}")
-    # for step in plan["steps"]:
-    #     prompt = f"""
-    #         You have 3 different operations you can perform. create_file(path, content), update_file(path, content), delete_file(path).
-    #         Here is the codebase:
-    #         {get_codebase_contents()}
-    #         Please perform the following operation: {step}
-    #         """
-    #     response = client.chat.completions.create(
-    #         model="gpt-4o-mini",
-    #         messages=[
-    #             {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
-    #             {"role": "user", "content": prompt},
-    #         ],
-    #         tools=TOOLS,
-    #     )
-    #     message = response.choices[0].message
-    #     if message.content:
-    #         print("Not enough information to run tool: ", message.content)
-    #     else:
-    #         tool_call = message.tool_calls[0]
-    #         run_tool(tool_call)
-    # print("\n")
+    print(f"{BLUE}Coder Agent - Executing Plan - Iteration {i}{RESET}")
+    for step in plan["steps"]:
+        prompt = f"""
+            You have 3 different operations you can perform. create_file(path, content), update_file(path, content), delete_file(path).
+            Here is the codebase:
+            {get_codebase_contents()}
+            Please perform the following operation: {step}
+            """
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            tools=TOOLS,
+        )
+        message = response.choices[0].message
+        if message.content:
+            print("Not enough information to run tool: ", message.content)
+        else:
+            tool_call = message.tool_calls[0]
+            run_tool(tool_call)
+    print("\n")
 
     # print(f"{MAGENTA}Reviewer Agent - Reviewing Codebase - Iteration {i}{RESET}")
     # response = client.chat.completions.create(

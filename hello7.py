@@ -120,9 +120,10 @@ for i in range(LOOP_LIMIT):
             ],
             tools=TOOLS,
         )
-        message = response.choices[0].message
+        message = response.completion_message
+        print(message)
         if message.content:
-            print("Not enough information to run tool: ", message.content)
+            print("Not enough information to run tool: ", message.content[:100])
         else:
             tool_call = message.tool_calls[0]
             run_tool(tool_call)

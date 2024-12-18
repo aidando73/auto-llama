@@ -79,18 +79,18 @@ def delete_file(path):
 
 
 def run_tool(tool_call):
-    arguments = json.loads(tool_call.function.arguments)
-    if tool_call.function.name == "create_file":
+    arguments = tool_call.arguments
+    if tool_call.tool_name == "create_file":
         if "path" not in arguments or "content" not in arguments:
             print(f"create_file, couldn't parse arguments: {arguments}")
             return
         create_file(arguments["path"], arguments["content"])
-    elif tool_call.function.name == "update_file":
+    elif tool_call.tool_name == "update_file":
         if "path" not in arguments or "content" not in arguments:
             print(f"update_file, couldn't parse arguments: {arguments}")
             return
         update_file(arguments["path"], arguments["content"])
-    elif tool_call.function.name == "delete_file":
+    elif tool_call.tool_name == "delete_file":
         if "path" not in arguments:
             print(f"delete_file, couldn't parse arguments: {arguments}")
             return

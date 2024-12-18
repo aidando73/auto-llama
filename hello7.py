@@ -80,18 +80,21 @@ for i in range(LOOP_LIMIT):
         response_format={
             "type": "json_schema",
             "json_schema": {
-                "name": "Plan",
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "title": "Plan",
                 "description": f"A plan to complete the task of creating a codebase that will {PROGRAM_OBJECTIVE}.",
-                "strict": True,
-                "schema": {
-                    "type": "object",
-                    "properties": {
-                        "steps": {"type": "array", "items": {"type": "string"}},
-                    },
-                    "required": ["steps"],
-                    "additionalProperties": False,
+                "type": "object",
+                "properties": {
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
                 },
-            },
+                "required": ["steps"],
+                "additionalProperties": False
+            }
         },
         tools=TOOLS,
     )

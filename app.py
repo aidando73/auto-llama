@@ -7,7 +7,8 @@ MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
 
 LOOP_LIMIT = 5
 
-MAX_TOKENS = 128_000
+# No limit on output tokens
+MAX_TOKENS = 200_000
 
 
 PROGRAM_OBJECTIVE="a web server that has an API endpoint that translates text from English to French."

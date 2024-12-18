@@ -225,8 +225,8 @@ for i in range(LOOP_LIMIT):
         },
     )
     plan = json.loads(response.choices[0].message.content)
-    for step in plan["steps"]:
-        print(step)
+    for step_idx, step in enumerate(plan["steps"]):
+        print(f"{step_idx + 1}. {step}")
     print("\n")
 
     # Coding agent executes the plan
@@ -264,7 +264,6 @@ for i in range(LOOP_LIMIT):
             {get_codebase_contents()}
             Please review the codebase and make sure it is correct.
             Please provide a list of changes you would like to make to the codebase.
-            Otherwise, if you think the codebase is correct, please say LGTM
             """},
         ],
         stream=True,
@@ -274,10 +273,4 @@ for i in range(LOOP_LIMIT):
         if chunk.choices[0].delta.content:
             print(chunk.choices[0].delta.content, end="", flush=True)
             review_feedback += chunk.choices[0].delta.content
-    print("\n")
-    if review_feedback == "LGTM":
-        print(f"{GREEN}Reviewer Agent - LGTMed{RESET}")
-        break
-    else:
-        print(review_feedback)
     print("\n")

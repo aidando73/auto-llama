@@ -6,7 +6,7 @@ import json
 MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
 
 # Number of code review cycles
-CODE_REVIEW_CYCLES = 7
+CODE_REVIEW_CYCLES = 5
 
 # No limit on output tokens
 MAX_TOKENS = 200_000

@@ -110,6 +110,15 @@ for i in range(LOOP_LIMIT):
 
     # Coding agent executes the plan
     print(f"{BLUE}Coder Agent - Executing Plan - Iteration {i}{RESET}")
+    if review_feedback:
+        prompt_feedback = f"""
+        Keep in mind one a senior engineer has provided the following feedback:
+        {review_feedback}
+
+        """
+    else:
+        prompt_feedback = ""
+
     for step in plan["steps"]:
         prompt = f"""
             You have 3 different operations you can perform. create_file(path, content), update_file(path, content), delete_file(path).
@@ -117,6 +126,7 @@ for i in range(LOOP_LIMIT):
             {get_codebase_contents()}
             Please perform the following operation: {step}
 
+            {prompt_feedback}
             Please don't escape \n or \t in the content you are writing to a file and please don't create incomplete files.
             """
         response = client.inference.chat_completion(

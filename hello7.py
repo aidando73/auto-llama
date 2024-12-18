@@ -98,7 +98,7 @@ for i in range(LOOP_LIMIT):
         },
         tools=TOOLS,
     )
-    plan = json.loads(response.choices[0].message.content)
+    plan = json.loads(response.completion_message.content)
     for step_idx, step in enumerate(plan["steps"]):
         print(f"{step_idx + 1}. {step}")
     print("\n")

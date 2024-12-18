@@ -133,23 +133,23 @@ for i in range(LOOP_LIMIT):
             run_tool(tool_call)
     print("\n")
 
-    # print(f"{MAGENTA}Reviewer Agent - Reviewing Codebase - Iteration {i}{RESET}")
-    # response = client.chat.completions.create(
-    #     model="gpt-4o-mini",
-    #     messages=[
-    #         {"role": "system", "content": REVIEWER_AGENT_SYSTEM_PROMPT},
-    #         {"role": "user", "content": f"""
-    #         Here is the full codebase:
-    #         {get_codebase_contents()}
-    #         Please review the codebase and make sure it is correct.
-    #         Please provide a list of changes you would like to make to the codebase.
-    #         """},
-    #     ],
-    #     stream=True,
-    # )
-    # review_feedback = ""
-    # for chunk in response:
-    #     if chunk.choices[0].delta.content:
-    #         print(chunk.choices[0].delta.content, end="", flush=True)
-    #         review_feedback += chunk.choices[0].delta.content
-    # print("\n")
+    print(f"{MAGENTA}Reviewer Agent - Reviewing Codebase - Iteration {i}{RESET}")
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": REVIEWER_AGENT_SYSTEM_PROMPT},
+            {"role": "user", "content": f"""
+            Here is the full codebase:
+            {get_codebase_contents()}
+            Please review the codebase and make sure it is correct.
+            Please provide a list of changes you would like to make to the codebase.
+            """},
+        ],
+        stream=True,
+    )
+    review_feedback = ""
+    for chunk in response:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end="", flush=True)
+            review_feedback += chunk.choices[0].delta.content
+    print("\n")

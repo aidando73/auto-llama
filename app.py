@@ -5,7 +5,8 @@ import json
 
 MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
 
-LOOP_LIMIT = 5
+# Number of code review cycles
+CODE_REVIEW_CYCLES = 7
 
 # No limit on output tokens
 MAX_TOKENS = 200_000
@@ -45,7 +46,7 @@ RESET = "\033[0m"
 client = LlamaStackClient(base_url=f"http://localhost:{os.environ['LLAMA_STACK_PORT']}")
 
 review_feedback = None
-for i in range(1, LOOP_LIMIT + 1):
+for i in range(1, CODE_REVIEW_CYCLES + 1):
     print(f"{BLUE}Coder Agent - Creating Plan - Iteration {i}{RESET}")
     if review_feedback:
         prompt_feedback = f"""

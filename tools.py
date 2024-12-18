@@ -8,50 +8,43 @@ TOOLS = [
         "tool_name": "create_file",
         "description": "Create a file with the given name and content. If there are any directories that don't exist, create them.",
         "parameters": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "The relative path to the file to create",
-                },
-                "content": {
-                    "type": "string",
-                    "description": "The content of the file to create",
-                },
+            "path": {
+                "param_type": "string",
+                "description": "The relative path to the file to create",
+                "required": True,
             },
-            "required": ["path", "content"],
+            "content": {
+                "param_type": "string",
+                "description": "The content of the file to create",
+                "required": True,
+            },
         },
     },
     {
         "tool_name": "update_file",
         "description": "Update a file with the given name and content. If the file does not exist, create it.",
         "parameters": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "The relative path to the file to update",
-                },
-                "content": {
-                    "type": "string",
-                    "description": "The content of the file to update",
-                },
+            "path": {
+                "param_type": "string",
+                "description": "The relative path to the file to update",
+                "required": True,
             },
-            "required": ["path", "content"],
+            "content": {
+                "param_type": "string",
+                "description": "The content of the file to update",
+                "required": True,
+            },
         },
     },
     {
         "tool_name": "delete_file",
         "description": "Delete a file with the given path. If the file does not exist, do nothing.",
         "parameters": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "The relative path to the file to delete",
-                },
+            "path": {
+                "param_type": "string",
+                "description": "The relative path to the file to delete",
+                "required": True,
             },
-            "required": ["path"],
         },
     },
 ]

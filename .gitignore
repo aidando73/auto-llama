@@ -3,3 +3,5 @@ env/
 
 sandbox/
 .envrc
+
+__pycache__/

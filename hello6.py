@@ -260,16 +260,21 @@ for i in range(LOOP_LIMIT):
         messages=[
             {"role": "system", "content": REVIEWER_AGENT_SYSTEM_PROMPT},
             {"role": "user", "content": f"""
-            Here is the codebase:
+            Here is the full codebase:
             {get_codebase_contents()}
             Please review the codebase and make sure it is correct.
             Please provide a list of changes you would like to make to the codebase.
             Otherwise, if you think the codebase is correct, please say LGTM
             """},
         ],
+        stream=True,
     )
-    print(response.choices[0].message.content)
-    review_feedback = response.choices[0].message.content
+    review_feedback = ""
+    for chunk in response:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end="", flush=True)
+            review_feedback += chunk.choices[0].delta.content
+    print("\n")
     if review_feedback == "LGTM":
         print(f"{GREEN}Reviewer Agent - LGTMed{RESET}")
         break

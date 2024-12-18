@@ -125,7 +125,6 @@ for i in range(LOOP_LIMIT):
             tools=TOOLS,
         )
         message = response.completion_message
-        print(message)
         if message.content:
             print("Not enough information to run tool: ", message.content[:100])
         else:
@@ -134,8 +133,8 @@ for i in range(LOOP_LIMIT):
     print("\n")
 
     print(f"{MAGENTA}Reviewer Agent - Reviewing Codebase - Iteration {i}{RESET}")
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
+    response = client.inference.chat_completion(
+        model_id=MODEL_ID,
         messages=[
             {"role": "system", "content": REVIEWER_AGENT_SYSTEM_PROMPT},
             {"role": "user", "content": f"""
@@ -149,7 +148,7 @@ for i in range(LOOP_LIMIT):
     )
     review_feedback = ""
     for chunk in response:
-        if chunk.choices[0].delta.content:
-            print(chunk.choices[0].delta.content, end="", flush=True)
-            review_feedback += chunk.choices[0].delta.content
+        if chunk.event.delta:
+            print(chunk.event.delta, end="", flush=True)
+            review_feedback += chunk.event.delta
     print("\n")

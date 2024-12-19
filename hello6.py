@@ -19,6 +19,7 @@ def create_file(path, content):
         f.write(content)
     print(f"Created file {os.path.join(SANDBOX_DIR, path)}")
 
+
 # Does the same thing as create_file - but nice to have a separate function for updating files
 # So the LLM has the option to update files if it wants to - if that makes more sense than creating a new file
 def update_file(path, content):
@@ -27,13 +28,17 @@ def update_file(path, content):
         f.write(content)
     print(f"Updated file {os.path.join(SANDBOX_DIR, path)}")
 
+
 def delete_file(path):
     # If the file doesn't exist, don't do anything
     if not os.path.exists(os.path.join(SANDBOX_DIR, path)):
-        print(f"Tried to delete file {os.path.join(SANDBOX_DIR, path)} but it does not exist")
+        print(
+            f"Tried to delete file {os.path.join(SANDBOX_DIR, path)} but it does not exist"
+        )
         return
     os.remove(os.path.join(SANDBOX_DIR, path))
     print(f"Deleted file {os.path.join(SANDBOX_DIR, path)}")
+
 
 # def make_dir(path):
 #     os.makedirs(os.path.join(SANDBOX_DIR, path), exist_ok=True)
@@ -66,20 +71,20 @@ TOOLS = [
         "function": {
             "name": "update_file",
             "description": "Update a file with the given name and content. If the file does not exist, create it.",
-        },
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "The relative path to the file to update",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "The relative path to the file to update",
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The content of the file to update",
+                    },
                 },
-                "content": {
-                    "type": "string",
-                    "description": "The content of the file to update",
-                },
+                "required": ["path", "content"],
             },
-            "required": ["path", "content"],
         },
     },
     {
@@ -87,19 +92,20 @@ TOOLS = [
         "function": {
             "name": "delete_file",
             "description": "Delete a file with the given path. If the file does not exist, do nothing.",
-        },
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "The relative path to the file to delete",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "The relative path to the file to delete",
+                    },
                 },
+                "required": ["path"],
             },
-            "required": ["path"],
         },
     },
 ]
+
 
 def run_tool(tool_call):
     arguments = json.loads(tool_call.function.arguments)
@@ -124,13 +130,15 @@ from openai import OpenAI
 from pydantic import BaseModel
 import json
 
-PROGRAM_OBJECTIVE="a web server that has an API endpoint that translates text from English to French."
+PROGRAM_OBJECTIVE = (
+    "a web server that has an API endpoint that translates text from English to French."
+)
 
-CODER_AGENT_SYSTEM_PROMPT=f"""
+CODER_AGENT_SYSTEM_PROMPT = f"""
 You are a software engineer who is writing code to build a python codebase: {PROGRAM_OBJECTIVE}.
 """
 
-REVIEWER_AGENT_SYSTEM_PROMPT=f"""
+REVIEWER_AGENT_SYSTEM_PROMPT = f"""
 You are a senior software engineer who is reviewing the codebase that was created by another software engineer.
 The program is {PROGRAM_OBJECTIVE}.
 If you think the codebase is good enough to ship, please say LGTM.
@@ -138,8 +146,10 @@ If you think the codebase is good enough to ship, please say LGTM.
 
 from typing import List
 
+
 class Plan(BaseModel):
     steps: List[str]
+
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -151,9 +161,11 @@ if os.path.exists(SANDBOX_DIR):
             os.unlink(item_path)
         elif os.path.isdir(item_path):
             import shutil
+
             shutil.rmtree(item_path)
 else:
     os.makedirs(SANDBOX_DIR)
+
 
 def get_codebase_contents():
     contents = ""
@@ -165,6 +177,7 @@ def get_codebase_contents():
                 contents += f.read()
             contents += "\n\n"
     return contents
+
 
 LOOP_LIMIT = 5
 
@@ -188,7 +201,7 @@ for i in range(LOOP_LIMIT):
     else:
         prompt_feedback = ""
 
-    prompt =f"""
+    prompt = f"""
         Create a step by step plan to complete the task of creating a codebase that will {PROGRAM_OBJECTIVE}.
         You have 3 different operations you can perform. create_file(path, content), update_file(path, content), delete_file(path)
         Limit your step by step plan to only these operations per step.
@@ -259,12 +272,15 @@ for i in range(LOOP_LIMIT):
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": REVIEWER_AGENT_SYSTEM_PROMPT},
-            {"role": "user", "content": f"""
+            {
+                "role": "user",
+                "content": f"""
             Here is the full codebase:
             {get_codebase_contents()}
             Please review the codebase and make sure it is correct.
             Please provide a list of changes you would like to make to the codebase.
-            """},
+            """,
+            },
         ],
         stream=True,
     )

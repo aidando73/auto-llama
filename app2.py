@@ -269,9 +269,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
             "Authorization": f"Bearer {os.environ['FIREWORKS_API_KEY']}",
         }
         resp = requests.request("POST", url, headers=headers, data=json.dumps(payload))
-        print(resp.json())
         message = resp.json()["choices"][0]["message"]
-        print(message)
         if "content" in message:
             print("Not enough information to run tool: ", message["content"][:100] + "...")
         else:

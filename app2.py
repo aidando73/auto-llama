@@ -51,7 +51,8 @@ def run_tool(tool_call):
 
 
 # MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
-MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.1-70B-Instruct"
 
 # Number of code review cycles
 CODE_REVIEW_CYCLES = 5
@@ -193,7 +194,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
         # Llama-stack doesn't handle 'required' fields in tool calls.
         url = "https://api.fireworks.ai/inference/v1/chat/completions"
         payload = {
-            "model": "fireworks/llama-v3p1-8b-instruct",
+            "model": "fireworks/llama-v3p1-70b-instruct",
             "max_tokens": MAX_TOKENS,
             "top_p": 1,
             "top_k": 40,

@@ -3,9 +3,14 @@ from llama_stack_client import LlamaStackClient
 from tools import SANDBOX_DIR, TOOLS, run_tool
 import json
 
+# Works:
 # MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
-# MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+
+# Doesn't work currently:
+# MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+
 
 # Number of code review cycles
 CODE_REVIEW_CYCLES = 5
@@ -130,7 +135,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
             Please perform the following operation: {step}
 
             {prompt_feedback}
-            Please don't escape \n or \t in the content you are writing to a file and please don't create incomplete files.
+            Please don't create incomplete files.
             """
         response = client.inference.chat_completion(
             model_id=MODEL_ID,
@@ -142,7 +147,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
                 "max_tokens": MAX_TOKENS,
             },
             tools=TOOLS,
-            tool_choice="required",
+            # tool_choice="required",
         )
         message = response.completion_message
         if message.content:

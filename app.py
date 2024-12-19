@@ -8,8 +8,8 @@ import json
 # MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
 
 # Doesn't work currently:
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
-# MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
 
 
 # Number of code review cycles

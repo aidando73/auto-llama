@@ -5,12 +5,11 @@ import json
 
 # Works:
 # MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
-# MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 
 # Doesn't work currently:
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
-
 
 # Number of code review cycles
 CODE_REVIEW_CYCLES = 5
@@ -104,7 +103,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
                     }
                 },
                 "required": ["steps"],
-                "additionalProperties": False
+                "additionalProperties": False,
             }
         },
     )
@@ -148,6 +147,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
                 "max_tokens": MAX_TOKENS,
             },
             tools=TOOLS,
+            tool_prompt_format="python_list"
             # tool_choice="required",
         )
         message = response.completion_message

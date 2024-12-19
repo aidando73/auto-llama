@@ -142,6 +142,7 @@ REVIEWER_AGENT_SYSTEM_PROMPT = f"""
 You are a senior software engineer who is reviewing the codebase that was created by another software engineer.
 The program is {PROGRAM_OBJECTIVE}.
 If you think the codebase is good enough to ship, please say LGTM.
+Be pragmatic about dependencies - don't import too many.
 """
 
 from typing import List

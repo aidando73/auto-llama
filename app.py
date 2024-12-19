@@ -3,8 +3,8 @@ from llama_stack_client import LlamaStackClient
 from tools import SANDBOX_DIR, TOOLS, run_tool
 import json
 
-# MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
-MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
+# MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
 
 # Number of code review cycles
 CODE_REVIEW_CYCLES = 5
@@ -143,6 +143,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
             tools=TOOLS,
         )
         message = response.completion_message
+        print(message)
         if message.content:
             print("Not enough information to run tool: ", message.content[:100] + "...")
         else:

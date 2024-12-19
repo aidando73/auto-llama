@@ -51,11 +51,19 @@ TOOLS = [
 
 
 def create_file(path, content):
+    if not path:
+        print("create_file, couldn't parse arguments: {arguments}")
+        return
+
     # Hack because llama sometimes escapes newlines
     content = content.replace("\\n", "\n")
 
     # Create any directories that don't exist
-    os.makedirs(os.path.dirname(os.path.join(SANDBOX_DIR, path)), exist_ok=True)
+    try:
+        os.makedirs(os.path.dirname(os.path.join(SANDBOX_DIR, path)), exist_ok=True)
+    except Exception as e:
+        print(f"create_file, error creating parent directories: {path}. Skipping.")
+        return
 
     # Write to file
     with open(os.path.join(SANDBOX_DIR, path), "w") as f:
@@ -63,11 +71,19 @@ def create_file(path, content):
     print(f"Created file {os.path.join(SANDBOX_DIR, path)}")
 
 def update_file(path, content):
+    if not path:
+        print("update_file, couldn't parse arguments: {arguments}")
+        return
+
     # Hack because llama sometimes escapes newlines
     content = content.replace("\\n", "\n")
 
     # Create any directories that don't exist
-    os.makedirs(os.path.dirname(os.path.join(SANDBOX_DIR, path)), exist_ok=True)
+    try:
+        os.makedirs(os.path.dirname(os.path.join(SANDBOX_DIR, path)), exist_ok=True)
+    except Exception as e:
+        print(f"update_file, error creating parent directories: {path}. Skipping.")
+        return
 
     # Write to file
     with open(os.path.join(SANDBOX_DIR, path), "w") as f:

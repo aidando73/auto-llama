@@ -193,7 +193,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
         # Llama-stack doesn't handle 'required' fields in tool calls.
         url = "https://api.fireworks.ai/inference/v1/chat/completions"
         payload = {
-            "model": "fireworks/llama-v3p3-70b-instruct",
+            "model": "fireworks/llama-v3p1-8b-instruct",
             "max_tokens": MAX_TOKENS,
             "top_p": 1,
             "top_k": 40,

@@ -28,7 +28,11 @@ def delete_file(path):
     print(f"Deleted file {os.path.join(SANDBOX_DIR, path)}")
 
 def run_tool(tool_call):
-    arguments = json.loads(tool_call["function"]["arguments"])
+    try:
+        arguments = json.loads(tool_call["function"]["arguments"])
+    except Exception as e:
+        print(f"Error parsing tool call: {e}")
+        return
     if tool_call["function"]["name"] == "create_file":
         if "path" not in arguments or "content" not in arguments:
             print(f"create_file, couldn't parse arguments: {arguments}")
@@ -189,7 +193,7 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
         # Llama-stack doesn't handle 'required' fields in tool calls.
         url = "https://api.fireworks.ai/inference/v1/chat/completions"
         payload = {
-            "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+            "model": "fireworks/llama-v3p3-70b-instruct",
             "max_tokens": MAX_TOKENS,
             "top_p": 1,
             "top_k": 40,

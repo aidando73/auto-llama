@@ -1,7 +1,7 @@
 import os
 import json
 
-SANDBOX_DIR = "/Users/aidand/dev/auto-llama/sandbox"
+SANDBOX_DIR = os.path.join(os.getcwd(), "sandbox")
 
 TOOLS = [
     {
@@ -55,6 +55,12 @@ def create_file(path, content):
         print("create_file, couldn't parse arguments: {arguments}")
         return
 
+    # Ensure path doesn't try to escape sandbox directory
+    normalized_path = os.path.normpath(path)
+    if normalized_path.startswith('..') or normalized_path.startswith('/'):
+        print(f"create_file: Path {path} attempts to escape sandbox directory. Skipping.")
+        return
+
     # Hack because llama sometimes escapes newlines
     content = content.replace("\\n", "\n")
 
@@ -74,6 +80,12 @@ def update_file(path, content):
     if not path:
         print("update_file, couldn't parse arguments: {arguments}")
         return
+    
+    # Ensure path doesn't try to escape sandbox directory
+    normalized_path = os.path.normpath(path)
+    if normalized_path.startswith('..') or normalized_path.startswith('/'):
+        print(f"update_file: Path {path} attempts to escape sandbox directory. Skipping.")
+        return
 
     # Hack because llama sometimes escapes newlines
     content = content.replace("\\n", "\n")
@@ -91,6 +103,12 @@ def update_file(path, content):
     print(f"Updated file {os.path.join(SANDBOX_DIR, path)}")
 
 def delete_file(path):
+    # Ensure path doesn't try to escape sandbox directory
+    normalized_path = os.path.normpath(path)
+    if normalized_path.startswith('..') or normalized_path.startswith('/'):
+        print(f"delete_file: Path {path} attempts to escape sandbox directory. Skipping.")
+        return
+
     # If the file doesn't exist, don't do anything
     if not os.path.exists(os.path.join(SANDBOX_DIR, path)):
         print(

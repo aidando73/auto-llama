@@ -5,11 +5,15 @@ import json
 
 # Works:
 # MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
-MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 
-# Doesn't work currently:
-# MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+
+if "3.2" in MODEL_ID or "3.3" in MODEL_ID:
+    tool_prompt_format = "python_list"
+else:
+    tool_prompt_format = "json"
 
 # Number of code review cycles
 CODE_REVIEW_CYCLES = 5
@@ -147,12 +151,12 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
                 "max_tokens": MAX_TOKENS,
             },
             tools=TOOLS,
-            tool_prompt_format="python_list"
+            tool_prompt_format=tool_prompt_format,
             # tool_choice="required",
         )
         message = response.completion_message
         if message.content:
-            print("Couldn't run tool - got message: ", message.content[:50] + "...")
+            print("Didn't get tool call - got message: ", message.content[:50] + "...")
         else:
             tool_call = message.tool_calls[0]
             run_tool(tool_call)

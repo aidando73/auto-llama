@@ -141,19 +141,23 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
             {prompt_feedback}
             Please don't create incomplete files.
             """
-        response = client.inference.chat_completion(
-            model_id=MODEL_ID,
-            messages=[
-                {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
-                {"role": "user", "content": prompt},
-            ],
-            sampling_params={
-                "max_tokens": MAX_TOKENS,
-            },
-            tools=TOOLS,
-            tool_prompt_format=tool_prompt_format,
-            # tool_choice="required",
-        )
+        try: 
+            response = client.inference.chat_completion(
+                model_id=MODEL_ID,
+                messages=[
+                    {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt},
+                ],
+                sampling_params={
+                    "max_tokens": MAX_TOKENS,
+                },
+                tools=TOOLS,
+                tool_prompt_format=tool_prompt_format,
+                # tool_choice="required",
+            )
+        except Exception as e:
+            print(f"Error running tool - skipping: {e.message[:50] + '...'}")
+            continue
         message = response.completion_message
         if message.content:
             print("Didn't get tool call - got message: ", message.content[:50] + "...")

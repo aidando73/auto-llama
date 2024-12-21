@@ -8,7 +8,9 @@ import json
 # MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 
-MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.2-1B-Instruct"
+
 
 if "3.2" in MODEL_ID or "3.3" in MODEL_ID:
     tool_prompt_format = "python_list"

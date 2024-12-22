@@ -72,9 +72,13 @@ def create_file(path, content):
         return
 
     # Write to file
-    with open(os.path.join(SANDBOX_DIR, path), "w") as f:
-        f.write(content)
-    print(f"Created file {os.path.join(SANDBOX_DIR, path)}")
+    try:
+        with open(os.path.join(SANDBOX_DIR, path), "w") as f:
+            f.write(content)
+        print(f"Created file {os.path.join(SANDBOX_DIR, path)}")
+    except Exception as e:
+        print(f"create_file, error writing to file: {path}. Skipping.")
+        return
 
 def update_file(path, content):
     if not path:
@@ -98,9 +102,13 @@ def update_file(path, content):
         return
 
     # Write to file
-    with open(os.path.join(SANDBOX_DIR, path), "w") as f:
-        f.write(content)
-    print(f"Updated file {os.path.join(SANDBOX_DIR, path)}")
+    try:
+        with open(os.path.join(SANDBOX_DIR, path), "w") as f:
+            f.write(content)
+        print(f"Updated file {os.path.join(SANDBOX_DIR, path)}")
+    except Exception as e:
+        print(f"update_file, error writing to file: {path}. Skipping.")
+        return
 
 def delete_file(path):
     # Ensure path doesn't try to escape sandbox directory
@@ -115,8 +123,13 @@ def delete_file(path):
             f"Tried to delete file {os.path.join(SANDBOX_DIR, path)} but it does not exist"
         )
         return
-    os.remove(os.path.join(SANDBOX_DIR, path))
-    print(f"Deleted file {os.path.join(SANDBOX_DIR, path)}")
+    
+    try:
+        os.remove(os.path.join(SANDBOX_DIR, path))
+        print(f"Deleted file {os.path.join(SANDBOX_DIR, path)}")
+    except Exception as e:
+        print(f"delete_file, error deleting file: {path}. Skipping.")
+        return
 
 
 def run_tool(tool_call):

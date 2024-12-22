@@ -72,6 +72,45 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
         prompt_feedback = ""
 
     prompt =f"""
+        Request:
+        Create a step by step plan to complete the task of creating a codebase that will print "Hello, World!".
+        You have 3 different operations you can perform. You can create a file, update a file, or delete a file.
+        Limit your step by step plan to only these operations per step.
+        Don't create more than 10 steps.
+
+        Please ensure there's a README.md file in the root of the codebase that describes the codebase and how to run it.
+        Please ensure there's a requirements.txt file in the root of the codebase that describes the dependencies of the codebase.
+
+        Please output your plan in JSON format without any other content.
+
+        Response:
+        [
+            "Create a file called main.py with the following content: 'print('Hello, World!')'",
+            "Create a file called requirements.txt with the following content: ''",
+            "Create a file called README.md with the following content: 'This is a codebase that prints 'Hello, World!'",
+        ]
+
+        
+        Request:
+        Create a step by step plan to complete the task of creating a codebase that will make an API call to google.com.
+        You have 3 different operations you can perform. You can create a file, update a file, or delete a file.
+        Limit your step by step plan to only these operations per step.
+        Don't create more than 10 steps.
+
+        Please ensure there's a README.md file in the root of the codebase that describes the codebase and how to run it.
+        Please ensure there's a requirements.txt file in the root of the codebase that describes the dependencies of the codebase.
+
+        Please output your plan in JSON format without any other content.
+
+        Response:
+        [
+            "Create a file called main.py that uses the requests library to make an API call to google.com",
+            "Create a file called requirements.txt with the following content: 'requests'",
+            "Create a file called README.md with the following content: 'This is a codebase that makes an API call to google.com'",
+        ]
+
+        
+        Request:
         Create a step by step plan to complete the task of creating a codebase that will {PROGRAM_OBJECTIVE}.
         You have 3 different operations you can perform. You can create a file, update a file, or delete a file.
         Limit your step by step plan to only these operations per step.
@@ -84,15 +123,6 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
         Please ensure there's a README.md file in the root of the codebase that describes the codebase and how to run it.
         Please ensure there's a requirements.txt file in the root of the codebase that describes the dependencies of the codebase.
 
-        Please output your plan in JSON format without any other content. For example:
-        {{
-            "steps": [
-                "Create a file called main.py with the following content: 'print('Hello, World!')'",
-                "Create a file called requirements.txt with the following content: 'python==3.10'",
-                "Create a file called README.md with the following content: 'This is the codebase for the English-French translator API. To run the API, navigate to the root directory and execute "python main.py"'",
-            ]
-        }}
-        Please don't include any other content in your response.
         """
     response = client.inference.chat_completion(
         model_id=MODEL_ID,

@@ -8,8 +8,8 @@ import json
 # MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 
-# MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
-MODEL_ID = "meta-llama/Llama-3.2-1B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.2-1B-Instruct"
 
 
 if "3.2" in MODEL_ID or "3.3" in MODEL_ID:
@@ -124,7 +124,10 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
         },
     )
     try:
-        plan = json.loads(response.completion_message.content)
+        content = response.completion_message.content
+        content = content.replace("```json", "").replace("```", "")
+        content = content.strip()
+        plan = json.loads(content)
     except Exception as e:
         print(f"Error parsing plan into JSON: {e}")
         # If we don't get valid JSON, we'll just include the full plan
@@ -195,6 +198,29 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
                 {prompt_feedback}
                 Please don't create incomplete files.
             """
+            try: 
+                response = client.inference.chat_completion(
+                    model_id=MODEL_ID,
+                    messages=[
+                        {"role": "system", "content": CODER_AGENT_SYSTEM_PROMPT},
+                        {"role": "user", "content": prompt},
+                    ],
+                    sampling_params={
+                        "max_tokens": MAX_TOKENS,
+                    },
+                    tools=TOOLS,
+                    tool_prompt_format=tool_prompt_format,
+                    # tool_choice="required",
+                )
+            except Exception as e:
+                print(f"Error running tool - skipping: {e.message[:50] + '...'}")
+                continue
+            message = response.completion_message
+            if message.content:
+                print("Didn't get tool call - got message: ", message.content[:50] + "...")
+            else:
+                tool_call = message.tool_calls[0]
+                run_tool(tool_call)
     print("\n")
 
     print(f"{MAGENTA}Reviewer Agent - Reviewing Codebase - Iteration {i}{RESET}")

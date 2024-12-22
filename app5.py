@@ -4,12 +4,19 @@ from tools import SANDBOX_DIR, TOOLS, run_tool
 import json
 
 # Works:
+MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
 # MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 
+# Note: Smaller models don't work very well in this example.
 # MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.2-1B-Instruct"
+
+PROGRAM_OBJECTIVE="a web server that has an API endpoint that translates text from English to French."
+
+# Number of code review cycles
+CODE_REVIEW_CYCLES = 5
+
 
 
 if "3.2" in MODEL_ID or "3.3" in MODEL_ID:
@@ -17,14 +24,7 @@ if "3.2" in MODEL_ID or "3.3" in MODEL_ID:
 else:
     tool_prompt_format = "json"
 
-# Number of code review cycles
-CODE_REVIEW_CYCLES = 5
 
-# No limit on output tokens
-MAX_TOKENS = 200_000
-
-
-PROGRAM_OBJECTIVE="a web server that has an API endpoint that translates text from English to French."
 
 CODER_AGENT_SYSTEM_PROMPT=f"""
 You are a software engineer who is writing code to build a python codebase: {PROGRAM_OBJECTIVE}.
@@ -36,6 +36,8 @@ The program is {PROGRAM_OBJECTIVE}.
 If you think the codebase is good enough to ship, please say LGTM.
 """
 
+# No limit on output tokens
+MAX_TOKENS = 200_000
 
 def get_codebase_contents():
     contents = ""
@@ -125,8 +127,6 @@ for i in range(1, CODE_REVIEW_CYCLES + 1):
     except Exception as e:
         print(f"Error parsing plan into JSON: {e}")
         plan = {"steps": []}
-    for step_idx, step in enumerate(plan["steps"]):
-        print(f"{step_idx + 1}. {step}")
     print("\n")
 
     # Coding agent executes the plan

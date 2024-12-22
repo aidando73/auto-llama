@@ -6,9 +6,9 @@ import json
 # Works:
 # MODEL_ID = "meta-llama/Llama-3.1-405B-Instruct-FP8"
 # MODEL_ID = "meta-llama/Llama-3.3-70B-Instruct"
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+# MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 
-# MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
 # MODEL_ID = "meta-llama/Llama-3.2-1B-Instruct"
 
 

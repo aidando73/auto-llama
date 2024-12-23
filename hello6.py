@@ -9,7 +9,7 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
-SANDBOX_DIR = "/Users/aidand/dev/auto-llama/sandbox"
+SANDBOX_DIR = os.path.join(os.getcwd(), "sandbox")
 
 
 def create_file(path, content):
@@ -189,7 +189,7 @@ RESET = "\033[0m"
 
 # Coding agent creates a step by step plan
 review_feedback = None
-for i in range(LOOP_LIMIT):
+for i in range(1, LOOP_LIMIT + 1):
     print(f"{BLUE}Coder Agent - Creating Plan - Iteration {i}{RESET}")
     if review_feedback:
         prompt_feedback = f"""

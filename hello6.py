@@ -131,7 +131,7 @@ from pydantic import BaseModel
 import json
 
 PROGRAM_OBJECTIVE = (
-    "a web app that translates text from English to French."
+    "a web app that translates text from English to French. Perform the translation on the server side."
 )
 
 CODER_AGENT_SYSTEM_PROMPT = f"""
